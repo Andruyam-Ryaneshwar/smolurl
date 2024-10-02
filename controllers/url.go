@@ -1,19 +1,20 @@
 package controllers
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/teris-io/shortid"
 	"net/http"
 	"smolurl/cache"
 	"smolurl/database"
 	"smolurl/models"
+
+	"github.com/gin-gonic/gin"
+	"github.com/teris-io/shortid"
 )
 
 func ShortenURL(c *gin.Context) {
 	userID := c.MustGet("userID").(uint)
 
 	var input struct {
-		OriginalUrl string `json:"original_url" binding:"required,url"`
+		OriginalUrl string `json:"original_url" binding:"required"`
 	}
 
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -35,7 +36,7 @@ func ShortenURL(c *gin.Context) {
 		UserID:      userID,
 	}
 
-	if err := database.DB.Create(&url); err != nil {
+	if err := database.DB.Create(&url).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save url"})
 		return
 	}

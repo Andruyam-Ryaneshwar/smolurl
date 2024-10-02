@@ -20,6 +20,10 @@ func ParseToken(tokenStr string) (uint, error) {
 		return []byte(config.AppConfig.JWT_SECRET), nil
 	})
 
+	if err != nil {
+		return 0, err
+	}
+
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		userID := uint(claims["user_id"].(float64))
 		return userID, nil

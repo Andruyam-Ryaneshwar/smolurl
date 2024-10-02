@@ -1,12 +1,12 @@
 package controllers
 
 import (
+	"fmt"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"smolurl/database"
 	"smolurl/models"
 	"smolurl/utils"
-
-	"github.com/gin-gonic/gin"
 )
 
 func Register(c *gin.Context) {
@@ -36,6 +36,8 @@ func Register(c *gin.Context) {
 
 	if err := database.DB.Create(&user).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "Error while creating user"})
+		fmt.Println(err)
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "User registered successfully"})
