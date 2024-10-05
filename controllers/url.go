@@ -62,4 +62,5 @@ func Redirect(c *gin.Context) {
 	}
 
 	cache.SetURL(shortUrl, url.OriginalUrl)
+	c.Redirect(http.StatusFound, url.OriginalUrl)
 }
